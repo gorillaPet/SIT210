@@ -1,20 +1,11 @@
+# include "Lights.h"
+
 //declare lights, button, and button state. 
 
 const int hallway = 5;
 const int door = 12;
 const int onOff = 13;
 bool pressed = false;
-
-//modularise later in a separate file
-void lightOn(int light)
-{
-  digitalWrite(light, HIGH);
-}
-
-void lightOff(int light)
-{
-  digitalWrite(light, LOW);
-}
 
 void setup()
 {
