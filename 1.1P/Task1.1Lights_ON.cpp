@@ -27,11 +27,11 @@ void loop()
   {
     lightOn(door);
     lightOn(hallway);
-    delay(10000);
+    delay(30000);
 
     lightOff(door);
     Serial.println("Door light off.");
-    delay(20000);
+    delay(60000);
 
     lightOff(hallway);
     Serial.println("Hall light off.");
