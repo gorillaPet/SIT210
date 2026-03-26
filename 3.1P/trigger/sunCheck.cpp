@@ -1,5 +1,6 @@
 #include "sunCheck.h"
 #include <Arduino.h>
+#include <WiFiNINA.h>
 //#include wifi library
 
 /*
@@ -33,15 +34,27 @@ and reports whether light is now on or off.
 
 */
 
-void reportSun(bool sunOn){
+void reportSun(bool sunOn, WiFiClient &client, char* host, String pathOn, String pathOff){
 
   if(!sunOn){
-    //add IFTTT logic
+
+    //light off email:
+    client.println("GET " + pathOff + " HTTP/1.1");
+    client.println("Host: " + String(host));
+    client.println("Connection: close");
+    client.println();
+ 
     Serial.println("Sunlight has moved off ");
     
   }else{
-    //add IFTTT logic
+
+    //light on email:
+    client.println("GET " + pathOn + " HTTP/1.1");
+    client.println("Host: " + String(host));
+    client.println("Connection: close");
+    client.println();
+
     Serial.println("Sunlight is on terrarium ");
-}
+  }
     
 }
