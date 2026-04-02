@@ -34,7 +34,16 @@ and reports whether light is now on or off.
 
 */
 
-void reportSun(bool sunOn, WiFiClient &client, char* host, String pathOn, String pathOff){
+void reportSun(bool sunOn, char* host, String pathOn, String pathOff){
+
+    // fresh connection
+
+  WiFiClient client; 
+    
+  if (!client.connect(host, 80)) {
+    Serial.println("Connection failed.");
+    return;
+  }
 
   if(!sunOn){
 
@@ -45,6 +54,8 @@ void reportSun(bool sunOn, WiFiClient &client, char* host, String pathOn, String
     client.println();
  
     Serial.println("Sunlight has moved off ");
+
+  
     
   }else{
 
@@ -55,6 +66,10 @@ void reportSun(bool sunOn, WiFiClient &client, char* host, String pathOn, String
     client.println();
 
     Serial.println("Sunlight is on terrarium ");
-  }
+
     
+
+  }
+  delay(500); //give a little buffer time
+  client.stop(); 
 }

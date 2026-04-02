@@ -9,11 +9,9 @@ BH1750 lightMeter;
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASSWORD;
 
-WiFiClient client;
-
 char HOST_NAME[] = "maker.ifttt.com";
 String PATH_NAME_ON =  "/trigger/sunOn/with/key/" + String(SECRET_KEY_IFTTT);
-String PATH_NAME_OFF = "/trigger/sunOff/with/key/" + String(SECRET_KEY_IFTTT);;
+String PATH_NAME_OFF = "/trigger/sunOff/with/key/" + String(SECRET_KEY_IFTTT);
 
 
 bool sunOn;
@@ -33,21 +31,14 @@ void setup() {
     delay(500);
   }
 
-  if (client.connect(HOST_NAME, 80)) {
-    if (client.connect(HOST_NAME, 80)){
-      Serial.println("Connected to server.");
-    } else {
-      Serial.println("Connection failed.");
-    }
-
-    if (!lightMeter.begin()) {
-      Serial.println("BH1750 begin() failed.");
-      
+  if (!lightMeter.begin()) {
+    Serial.println("BH1750 begin() failed.");
   }
-    Serial.println(F("BH1750 Test begin"));
 
-    sunOn = checkSun(lightMeter.readLightLevel());
-    reportSun(sunOn);
+  Serial.println(F("BH1750 Test begin"));
+
+  sunOn = checkSun(lightMeter.readLightLevel());
+  reportSun(sunOn, HOST_NAME, PATH_NAME_ON, PATH_NAME_OFF);
 
 }
 
@@ -57,11 +48,16 @@ void loop() {
     Serial.print("lux: ");
     Serial.println(lux);
 
+    Serial.println("prior state: ");
+    Serial.println(sunOn);
+
     newSunOn = checkSun(lux);
+    Serial.println("state: ");
+    Serial.println(newSunOn);
 
     if (newSunOn != sunOn) {
         Serial.println("State changed.");
-        reportSun(newSunOn, client, HOST_NAME, PATH_NAME_ON, PATH_NAME_OFF);
+        reportSun(newSunOn, HOST_NAME, PATH_NAME_ON, PATH_NAME_OFF);
         sunOn = newSunOn;
     }
     delay(1000);

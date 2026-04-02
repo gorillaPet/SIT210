@@ -28,6 +28,7 @@ String myStatus = "";
 
 void setup() {
   Serial.begin(115200);  // Initialize serial
+  while (!Serial); //wait
 
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
@@ -38,7 +39,8 @@ void setup() {
 
   String fv = WiFi.firmwareVersion();
   if (fv != "1.0.0") {
-    Serial.println("Please upgrade the firmware");
+  Serial.print("Firmware version: ");
+  Serial.println(fv);
   }
     
   ThingSpeak.begin(client);  //Initialize ThingSpeak
@@ -63,6 +65,7 @@ void loop() {
   if(WiFi.status() != WL_CONNECTED){
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(SECRET_SSID);
+    
     while(WiFi.status() != WL_CONNECTED){
       WiFi.begin(ssid, pass); // Connect to WPA/WPA2 network. Change this line if using open or WEP network
       Serial.print(".");
@@ -85,13 +88,11 @@ void loop() {
   ThingSpeak.setField(2, lux);
 
 
-  // figure out the status message 
+  // create and set the status message 
   myStatus = String("Temp: ") + temp + "C, Lux: " + lux;
   ThingSpeak.setStatus(myStatus);
-
-  // set the status
-  ThingSpeak.setStatus(myStatus);
   
+
   // write to the ThingSpeak channel
   int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
   if(x == 200){
