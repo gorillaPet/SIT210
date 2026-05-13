@@ -4,7 +4,7 @@
 const int dusk = 50;
 
 // pins
-const uint8_t btnPin = 2;
+const uint8_t switchPin = 2;
 const uint8_t sensorPin = 5;
 const uint8_t led1 = 7;
 const uint8_t led2 = 8;
